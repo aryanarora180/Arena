@@ -17,6 +17,8 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/schedule_23_chip"
+            app:chipBackgroundColor="@color/colorPrimary"
+            android:textColor="@color/background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
@@ -24,6 +26,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/schedule_24_chip"
+            app:chipBackgroundColor="@color/background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
@@ -31,6 +34,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/schedule_25_chip"
+            app:chipBackgroundColor="@color/background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
@@ -38,6 +42,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/schedule_26_chip"
+            app:chipBackgroundColor="@color/background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"

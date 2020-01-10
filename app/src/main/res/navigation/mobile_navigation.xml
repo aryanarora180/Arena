@@ -3,41 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_schedule">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_schedule"
         android:name="com.example.arena2020.ui.ScheduleFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_schedule"
         tools:layout="@layout/fragment_schedule" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_sports"
         android:name="com.example.arena2020.ui.SportsFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_sports"
         tools:layout="@layout/fragment_sports" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.arena2020.ui.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.arena2020.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
-
-    <fragment
-        android:id="@+id/nav_share"
-        android:name="com.example.arena2020.ui.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="com.example.arena2020.ui.ContactUsFragment"
-        android:label="@string/menu_send"
+        android:id="@+id/nav_contact_us"
+        android:name="com.example.arena2020.ui.AboutUsFragment"
+        android:label="@string/menu_contact_us"
         tools:layout="@layout/fragment_contact_us" />
+
+    <fragment
+        android:id="@+id/nav_about_us"
+        android:name="com.example.arena2020.ui.AboutUsFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about_us" />
+
 </navigation>
