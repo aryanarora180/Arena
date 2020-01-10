@@ -10,11 +10,20 @@
     <string name="menu_schedule">Schedule</string>
     <string name="menu_sports">Sports</string>
     <string name="menu_contact_us">Contact us</string>
+    <string name="menu_feed">Feed</string>
+    <string name="menu_sos">SOS</string>
+    <string name="menu_credits">App Credits</string>
     <string name="menu_about">About us</string>
+    <string name="menu_reachus">Reach us</string>
+    <string name="menu_map">Campus Map</string>
+
 
     <string name="chip_23">23RD</string>
     <string name="chip_24">24TH</string>
     <string name="chip_25">25TH</string>
     <string name="chip_26">26TH</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
