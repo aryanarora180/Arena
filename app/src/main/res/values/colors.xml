@@ -5,4 +5,10 @@
     <color name="colorAccent">#5A05D3</color>
     <color name="background">#F0E7FA</color>
     <color name="white">#FFFFFF</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textPrimaryDark">#5A05D3</color>
+    <color name="textSecondary">#B8F0E7FA</color>
+    <color name="sportCricket">#0000FF</color>
+    <color name="sportSquash">#00FF00</color>
+    <color name="sportDefault">#FF0000</color>
 </resources>
