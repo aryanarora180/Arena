@@ -5,25 +5,43 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_schedule" />
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/home"
+            android:title="@string/menu_feed" />
+
         <item
-            android:id="@+id/nav_announcements"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_announcements" />
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/group"
+            android:title="@string/menu_schedule" />
+
         <item
             android:id="@+id/nav_sports"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_sports" />
         <item
+            android:id="@+id/nav_sos"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_sos" />
+        <item
             android:id="@+id/nav_contact_us"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/contact"
             android:title="@string/menu_contact_us" />
         <item
             android:id="@+id/nav_about_us"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_about" />
+        <item
+            android:id="@+id/nav_credits"
+            android:icon="@drawable/credits"
+            android:title="@string/menu_credits" />
+        <item
+            android:id="@+id/nav_reachus"
+            android:icon="@drawable/reach"
+            android:title="@string/menu_reachus" />
+        <item
+            android:id="@+id/nav_campusmap"
+            android:icon="@drawable/map"
+            android:title="@string/menu_map" />
     </group>
 
 </menu>
