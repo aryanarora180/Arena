@@ -36,14 +36,14 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ScheduleSport sportsEvent = mEvents.get(position);
+        final ScheduleSport sportsEvent = mEvents.get(position);
 
         TextView timeHoursTextView = holder.timeHoursTextView;
         TextView timeAOPTextView = holder.timeAOPTextView;
         ImageView colorImageView = holder.colorImageView;
         TextView nameTextView = holder.nameTextView;
         TextView subtitleTextView = holder.subtitleTextView;
-        ImageView bookmarkedImageView = holder.bookmarkedImageView;
+        final ImageView bookmarkedImageView = holder.bookmarkedImageView;
 
         timeHoursTextView.setText(sportsEvent.getTime());
         timeAOPTextView.setText(sportsEvent.getAoP());
@@ -67,6 +67,19 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
         else
             bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_border_24);
+
+        bookmarkedImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sportsEvent.isBookmarked()) {
+                    bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_border_24);
+                    //TODO: Remvoe bookmark on backend
+                } else {
+                    bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
+                    //TODO: Remvoe bookmark on backend
+                }
+            }
+        });
 
     }
 
