@@ -48,20 +48,10 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
         timeHoursTextView.setText(sportsEvent.getTime());
         timeAOPTextView.setText(sportsEvent.getAoP());
 
-        switch (sportsEvent.getColor()) {
-            case ScheduleSport.SPORT_COLOR_CRICKET:
-                colorImageView.setColorFilter(R.color.sportCricket);
-                break;
-            case ScheduleSport.SPORT_COLOR_SQUASH:
-                colorImageView.setColorFilter(R.color.sportSquash);
-                break;
-            default:
-                colorImageView.setColorFilter(R.color.sportDefault);
-                //TODO: get respective color code from sportsEvent and set that color on colorImageView
-        }
+        //TODO: get respective color from sportsEvent and set that color on colorImageView
 
-        nameTextView.setText(sportsEvent.getName());
-        subtitleTextView.setText(sportsEvent.getSubtitle());
+        nameTextView.setText(sportsEvent.getSportName());
+        subtitleTextView.setText(sportsEvent.getTeams());
 
         if (sportsEvent.isBookmarked())
             bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
@@ -73,10 +63,10 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             public void onClick(View v) {
                 if (sportsEvent.isBookmarked()) {
                     bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_border_24);
-                    //TODO: Remvoe bookmark on backend
+                    //TODO: Remove bookmark on backend
                 } else {
                     bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
-                    //TODO: Remvoe bookmark on backend
+                    //TODO: Remove bookmark on backend
                 }
             }
         });

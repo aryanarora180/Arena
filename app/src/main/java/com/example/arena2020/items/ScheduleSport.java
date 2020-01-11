@@ -6,42 +6,50 @@ import java.util.Locale;
 
 public class ScheduleSport {
 
-    public static final int SPORT_COLOR_CRICKET = 100;
-    public static final int SPORT_COLOR_FOOTBALL = 101;
-    public static final int SPORT_COLOR_SQUASH = 102;
+    public static final long SPORT_CRICKET = 100;
+    public static final long SPORT_FOOTBALL = 101;
+    public static final long SPORT_SQUASH = 102;
 
+    private String documentId;
     private Date dateAndTime;
-    private String name;
-    private String subtitle;
+    private long sportCode;
+    private String teams;
     private boolean bookmarked;
-    private int color;
 
-    public ScheduleSport(Date dateAndTime, String name, String subtitle, boolean bookmarked, int color) {
+    public ScheduleSport(String documentId, Date dateAndTime, long sportCode, String teams, boolean bookmarked) {
+        this.documentId = documentId;
         this.dateAndTime = dateAndTime;
-        this.name = name;
-        this.subtitle = subtitle;
+        this.sportCode = sportCode;
+        this.teams = teams;
         this.bookmarked = bookmarked;
-        this.color = color;
     }
 
     public Date getDateAndTime() {
         return dateAndTime;
     }
 
-    public String getName() {
-        return name;
+    public long getSportCode() {
+        return sportCode;
     }
 
-    public String getSubtitle() {
-        return subtitle;
+    //TODO: implement getSportName() completely and remove hardcoding and use String resources
+    public String getSportName() {
+        if (sportCode == SPORT_CRICKET)
+            return "Cricket";
+        else if (sportCode == SPORT_FOOTBALL)
+            return "Football";
+        else if (sportCode == SPORT_SQUASH)
+            return "Squash";
+        else
+            return "Invalid sport";
+    }
+
+    public String getTeams() {
+        return teams;
     }
 
     public boolean isBookmarked() {
         return bookmarked;
-    }
-
-    public int getColor() {
-        return color;
     }
 
     public String getTime() {
@@ -54,4 +62,7 @@ public class ScheduleSport {
         return simpleDateFormat.format(dateAndTime);
     }
 
+    public String getDocumentId() {
+        return documentId;
+    }
 }

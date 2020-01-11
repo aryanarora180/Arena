@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_feed, R.id.nav_schedule, R.id.nav_sports, R.id.nav_sos
-                , R.id.nav_contact_us, R.id.nav_about_us, R.id.nav_credits, R.id.nav_reachus, R.id.nav_campusmap)
+                R.id.nav_feed, R.id.nav_schedule, R.id.nav_sports, R.id.nav_sos, R.id.nav_contact_us, R.id.nav_about_us, R.id.nav_credits, R.id.nav_reachus, R.id.nav_campusmap)
                 .setDrawerLayout(drawer)
                 .build();
 

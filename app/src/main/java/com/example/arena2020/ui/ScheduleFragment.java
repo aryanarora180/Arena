@@ -1,6 +1,7 @@
 package com.example.arena2020.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.arena2020.R;
 import com.example.arena2020.adapters.ScheduleSportAdapter;
 import com.example.arena2020.items.ScheduleSport;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -30,6 +36,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
 
     private ScheduleSportAdapter mAdapter;
     private RecyclerView mRecyclerView;
+
     public static final int NO_FILTER = 1001;
 
     private Chip mChip23;
@@ -43,9 +50,17 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     private RapidFloatingActionHelper filterFabHelpler;
     private int selectedDay;
 
+    ArrayList<ScheduleSport> mScheduleEvents;
+
+    private FirebaseFirestore db;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        db = FirebaseFirestore.getInstance();
+
+        mScheduleEvents = new ArrayList<>();
 
         mRecyclerView = root.findViewById(R.id.sports_schedule_recycler);
         mProgressBar = root.findViewById(R.id.schedule_progress_bar);
@@ -83,13 +98,15 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
             selectedDay = 23;
         }
 
-        setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+        getScheduleEvents(selectedDay, NO_FILTER);
+        setRecyclerData();
 
         mChip23.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedDay = 23;
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
             }
         });
 
@@ -97,7 +114,8 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
             @Override
             public void onClick(View view) {
                 selectedDay = 24;
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
             }
         });
 
@@ -105,7 +123,8 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
             @Override
             public void onClick(View view) {
                 selectedDay = 25;
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
             }
         });
 
@@ -113,28 +132,44 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
             @Override
             public void onClick(View view) {
                 selectedDay = 26;
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
             }
         });
 
         return root;
     }
 
-    private void setRecyclerData(ArrayList<ScheduleSport> scheduleEvents) {
-        setLoadingView();
-        mAdapter = new ScheduleSportAdapter(scheduleEvents, getContext());
+    private void setRecyclerData() {
+        mAdapter = new ScheduleSportAdapter(mScheduleEvents, getContext());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        setRecyclerView();
     }
 
-    private ArrayList<ScheduleSport> getScheduleEvents(int day, int filter) {
-        //TODO: get data and return it
-        ArrayList<ScheduleSport> scheduleEvents = new ArrayList<>();
-        scheduleEvents.add(new ScheduleSport(new Date(), "Squash", "BPHC vs IITM", false, ScheduleSport.SPORT_COLOR_SQUASH));
-        scheduleEvents.add(new ScheduleSport(new Date(), "Cricket", "BPHC vs BPGC", false, ScheduleSport.SPORT_COLOR_CRICKET));
-
-        return scheduleEvents;
+    private void getScheduleEvents(final int day, final int filter) {
+        //TODO: get data according to date and filter and return it
+        setLoadingView();
+        mScheduleEvents.clear();
+        db.collection(getString(R.string.firebase_collection_schedule))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                mScheduleEvents.add(new ScheduleSport(document.getId(),
+                                        document.getDate(getString(R.string.firebase_collection_schedule_field_date)),
+                                        document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode)),
+                                        document.getString(getString(R.string.firebase_collection_schedule_field_teams)),
+                                        false));
+                            }
+                            setRecyclerView();
+                            setRecyclerData();
+                        } else {
+                            Log.d("ScheduleFragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     private void setLoadingView() {
@@ -151,11 +186,13 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         switch (position) {
             case NO_FILTER:
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
                 filterFabHelpler.toggleContent();
                 break;
             default:
-                setRecyclerData(getScheduleEvents(selectedDay, NO_FILTER));
+                getScheduleEvents(selectedDay, NO_FILTER);
+                setRecyclerData();
                 filterFabHelpler.toggleContent();
         }
     }

@@ -26,4 +26,14 @@
     <string name="chip_25">25TH</string>
     <string name="chip_26">26TH</string>
 
+    <string name="firebase_collection_schedule">SportsSchedule</string>
+    <string name="firebase_collection_schedule_field_date">dateAndTime</string>
+    <string name="firebase_collection_schedule_field_sportCode">sportCode</string>
+    <string name="firebase_collection_schedule_field_teams">teams</string>
+
+    <string name="firebase_collection_announcements">Announcements</string>
+    <string name="firebase_collection_announcements_field_date">date</string>
+    <string name="firebase_collection_announcements_field_name">name</string>
+    <string name="firebase_collection_announcements_field_desc">description</string>
+
 </resources>

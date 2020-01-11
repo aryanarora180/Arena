@@ -6,11 +6,13 @@ import java.util.Locale;
 
 public class Announcement {
 
+    private String documentId;
     private String announcementName;
     private String announcementDescription;
     private Date announcementDate;
 
-    public Announcement(String announcementName, String announcementDescription, Date announcementDate) {
+    public Announcement(String documentId, String announcementName, String announcementDescription, Date announcementDate) {
+        this.documentId = documentId;
         this.announcementName = announcementName;
         this.announcementDescription = announcementDescription;
         this.announcementDate = announcementDate;
