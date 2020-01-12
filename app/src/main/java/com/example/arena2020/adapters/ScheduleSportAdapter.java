@@ -8,10 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arena2020.R;
 import com.example.arena2020.items.ScheduleSport;
+import com.example.arena2020.ui.scores.typeOneScoresFragment;
 
 import java.util.ArrayList;
 
@@ -19,10 +22,12 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
 
     private Context mContext;
     private ArrayList<ScheduleSport> mEvents;
+    private FragmentManager mFragmentManager;
 
     public ScheduleSportAdapter(ArrayList<ScheduleSport> events, Context context) {
         mEvents = events;
         mContext = context;
+        mFragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
     }
 
     @NonNull
@@ -45,13 +50,20 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
         TextView subtitleTextView = holder.subtitleTextView;
         final ImageView bookmarkedImageView = holder.bookmarkedImageView;
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLiveScoreFragment(sportsEvent.getDocumentId());
+            }
+        });
+
         timeHoursTextView.setText(sportsEvent.getTime());
         timeAOPTextView.setText(sportsEvent.getAoP());
 
         //TODO: get respective color from sportsEvent and set that color on colorImageView
 
         nameTextView.setText(sportsEvent.getSportName());
-        subtitleTextView.setText(sportsEvent.getTeams());
+        subtitleTextView.setText(sportsEvent.getVsTeams());
 
         if (sportsEvent.isBookmarked())
             bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
@@ -62,11 +74,13 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             @Override
             public void onClick(View v) {
                 if (sportsEvent.isBookmarked()) {
+                    //TODO: Remove event from calendar
                     bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_border_24);
-                    //TODO: Remove bookmark on backend
+                    sportsEvent.setBookmarked(false);
                 } else {
+                    //TODO: Add event to calendar
                     bookmarkedImageView.setImageResource(R.drawable.outline_bookmark_24);
-                    //TODO: Remove bookmark on backend
+                    sportsEvent.setBookmarked(true);
                 }
             }
         });
@@ -96,6 +110,10 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             bookmarkedImageView = itemView.findViewById(R.id.list_schedule_sport_bookmark);
         }
 
+    }
+
+    private void openLiveScoreFragment(String documentID) {
+        mFragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new typeOneScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
     }
 
 }

@@ -58,7 +58,6 @@ public class AnnouncementFragment extends Fragment {
     }
 
     private void getAnnouncements() {
-        //TODO: get data and return it
         setLoadingView();
         mAnnouncements.clear();
         db.collection(getString(R.string.firebase_collection_announcements))

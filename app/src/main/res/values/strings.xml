@@ -17,6 +17,8 @@
     <string name="menu_reachus">Reach us</string>
     <string name="menu_map">Campus Map</string>
 
+    <string name="live_score">Live scores</string>
+
     <string name="menu_announcements">Announcements</string>
 
     <string name="filter_remove">Remove filter</string>
@@ -29,7 +31,10 @@
     <string name="firebase_collection_schedule">SportsSchedule</string>
     <string name="firebase_collection_schedule_field_date">dateAndTime</string>
     <string name="firebase_collection_schedule_field_sportCode">sportCode</string>
-    <string name="firebase_collection_schedule_field_teams">teams</string>
+    <string name="firebase_collection_schedule_field_name_team_a">teamA</string>
+    <string name="firebase_collection_schedule_field_name_team_b">teamB</string>
+    <string name="firebase_collection_schedule_field_score_team_a">teamAScore</string>
+    <string name="firebase_collection_schedule_field_score_team_b">teamBScore</string>
 
     <string name="firebase_collection_announcements">Announcements</string>
     <string name="firebase_collection_announcements_field_date">date</string>
