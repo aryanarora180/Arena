@@ -113,7 +113,7 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
     }
 
     private void openLiveScoreFragment(String documentID) {
-        mFragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new typeOneScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
+        mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new typeOneScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
     }
 
 }
