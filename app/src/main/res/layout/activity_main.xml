@@ -9,8 +9,10 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <!-- there's another bug that happens some times. schedule fragment crashes sometimes randomly saying no context attached i'll reproduce -->
 
     <!-- This LinearLayout represents the contents of the screen  -->
 
@@ -53,17 +55,12 @@
     <!-- Note that `android:layout_gravity` can't be changed to anything but 'start' -->
 
     <com.google.android.material.navigation.NavigationView
-
         android:id="@+id/navigation_view"
-
         android:layout_width="wrap_content"
-
         android:layout_height="match_parent"
-
         android:layout_gravity="start"
-
-        android:background="@android:color/white"
-
+        android:background="@color/background"
+        app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -73,6 +73,7 @@ public class AnnouncementFragment extends Fragment {
                                         document.getString(getString(R.string.firebase_collection_announcements_field_desc)),
                                         document.getDate(getString(R.string.firebase_collection_announcements_field_date))));
                             }
+                            Log.d("HENLO", " " + R.string.firebase_collection_announcements_field_name);
                             setRecyclerView();
                             setRecyclerData();
                         } else {

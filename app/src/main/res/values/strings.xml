@@ -19,6 +19,9 @@
 
     <string name="live_score">Live scores</string>
 
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+
     <string name="menu_announcements">Announcements</string>
 
     <string name="filter_remove">Remove filter</string>

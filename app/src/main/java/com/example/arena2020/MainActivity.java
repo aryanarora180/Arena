@@ -1,5 +1,6 @@
 package com.example.arena2020;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -37,10 +38,35 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDrawer = findViewById(R.id.drawer_layout);
+
+        drawerToggle = setupDrawerToggle();
+        drawerToggle.syncState();
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawer.addDrawerListener(drawerToggle);
         nvDrawer = findViewById(R.id.navigation_view);
         setupDrawerContent(nvDrawer);
 
         loadFrag(new AnnouncementFragment());
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+        // and will not render the hamburger icon without it.
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

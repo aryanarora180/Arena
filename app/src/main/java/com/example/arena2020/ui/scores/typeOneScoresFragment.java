@@ -61,7 +61,7 @@ public class typeOneScoresFragment extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
                 if (snapshot != null && snapshot.exists()) {
-                    //TODO: Set scores and text
+                    //TODO: put live scores
                 }
             }
         });
