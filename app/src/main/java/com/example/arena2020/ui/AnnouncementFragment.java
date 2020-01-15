@@ -69,9 +69,9 @@ public class AnnouncementFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 mAnnouncements.add(new Announcement(document.getId(),
-                                        document.getString(getString(R.string.firebase_collection_announcements_field_name)),
-                                        document.getString(getString(R.string.firebase_collection_announcements_field_desc)),
-                                        document.getDate(getString(R.string.firebase_collection_announcements_field_date))));
+                                        document.getString(getContext().getString(R.string.firebase_collection_announcements_field_name)),
+                                        document.getString(getContext().getString(R.string.firebase_collection_announcements_field_desc)),
+                                        document.getDate(getContext().getString(R.string.firebase_collection_announcements_field_date))));
                             }
                             Log.d("HENLO", " " + R.string.firebase_collection_announcements_field_name);
                             setRecyclerView();

@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arena2020.R;
 import com.example.arena2020.items.ScheduleSport;
-import com.example.arena2020.ui.scores.typeOneScoresFragment;
+import com.example.arena2020.ui.scores.TypeOneScoresFragment;
+import com.example.arena2020.ui.scores.TypeTwoScoresFragment;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,6 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
 
         TextView timeHoursTextView = holder.timeHoursTextView;
         TextView timeAOPTextView = holder.timeAOPTextView;
-        ImageView colorImageView = holder.colorImageView;
         TextView nameTextView = holder.nameTextView;
         TextView subtitleTextView = holder.subtitleTextView;
         final ImageView bookmarkedImageView = holder.bookmarkedImageView;
@@ -53,7 +53,7 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openLiveScoreFragment(sportsEvent.getDocumentId());
+                openLiveScoreFragment(sportsEvent.getDocumentId(), sportsEvent.getSportType());
             }
         });
 
@@ -95,7 +95,6 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView timeHoursTextView;
         public TextView timeAOPTextView;
-        public ImageView colorImageView;
         public TextView nameTextView;
         public TextView subtitleTextView;
         public ImageView bookmarkedImageView;
@@ -104,7 +103,6 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             super(itemView);
             timeHoursTextView = itemView.findViewById(R.id.list_schedule_sport_time_hours);
             timeAOPTextView = itemView.findViewById(R.id.list_schedule_sport_aop);
-            colorImageView = itemView.findViewById(R.id.list_schedule_sport_color);
             nameTextView = itemView.findViewById(R.id.list_schedule_sport_name_text_view);
             subtitleTextView = itemView.findViewById(R.id.list_schedule_sport_subtitle);
             bookmarkedImageView = itemView.findViewById(R.id.list_schedule_sport_bookmark);
@@ -112,8 +110,11 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
 
     }
 
-    private void openLiveScoreFragment(String documentID) {
-        mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new typeOneScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
+    private void openLiveScoreFragment(String documentID, long sportType) {
+        if (sportType == ScheduleSport.SPORT_TYPE_ONE)
+            mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new TypeOneScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
+        else if (sportType == ScheduleSport.SPORT_TYPE_TWO)
+            mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new TypeTwoScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
     }
 
 }

@@ -22,6 +22,8 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
 
+    <string name="live">Live</string>
+
     <string name="menu_announcements">Announcements</string>
 
     <string name="filter_remove">Remove filter</string>
@@ -34,10 +36,17 @@
     <string name="firebase_collection_schedule">SportsSchedule</string>
     <string name="firebase_collection_schedule_field_date">dateAndTime</string>
     <string name="firebase_collection_schedule_field_sportCode">sportCode</string>
+    <string name="firebase_collection_schedule_field_matchStatus">matchStatus</string>
     <string name="firebase_collection_schedule_field_name_team_a">teamA</string>
     <string name="firebase_collection_schedule_field_name_team_b">teamB</string>
     <string name="firebase_collection_schedule_field_score_team_a">teamAScore</string>
     <string name="firebase_collection_schedule_field_score_team_b">teamBScore</string>
+    <string name="firebase_collection_schedule_field_batFirst">batFirst</string>
+    <string name="firebase_collection_schedule_field_score_currentInnings">currentInnings</string>
+    <string name="firebase_collection_schedule_field_overs_team_a">teamAOvers</string>
+    <string name="firebase_collection_schedule_field_overs_team_b">teamBOvers</string>
+    <string name="firebase_collection_schedule_field_wickets_team_a">teamAWickets</string>
+    <string name="firebase_collection_schedule_field_wickets_team_b">teamBWickets</string>
 
     <string name="firebase_collection_announcements">Announcements</string>
     <string name="firebase_collection_announcements_field_date">date</string>

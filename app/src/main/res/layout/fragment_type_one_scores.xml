@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/live_score_type_one_sport_name"
+        android:id="@+id/live_score_type_two_sport_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -18,7 +18,7 @@
         tools:text="Football" />
 
     <TextView
-        android:id="@+id/live_score_type_one_score"
+        android:id="@+id/live_score_type_two_score_a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -27,29 +27,55 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/live_score_type_one_sport_name"
+        app:layout_constraintTop_toBottomOf="@+id/live_score_type_two_sport_name"
         tools:text="1:4" />
 
     <TextView
-        android:id="@+id/live_score_type_one_score_team_left"
+        android:id="@+id/live_score_type_two_score_team_a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:textColor="@color/black"
         android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="@+id/live_score_type_one_score"
-        app:layout_constraintEnd_toStartOf="@+id/live_score_type_one_score"
+        app:layout_constraintBottom_toBottomOf="@+id/live_score_type_two_score_a"
+        app:layout_constraintEnd_toStartOf="@+id/live_score_type_two_score_a"
         tools:text="IITH" />
 
     <TextView
-        android:id="@+id/live_score_type_one_score_team_right"
+        android:id="@+id/live_score_type_two_score_team_b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:textColor="@color/black"
         android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="@+id/live_score_type_one_score"
-        app:layout_constraintStart_toEndOf="@+id/live_score_type_one_score"
+        app:layout_constraintBottom_toBottomOf="@+id/live_score_type_two_score_a"
+        app:layout_constraintStart_toEndOf="@+id/live_score_type_two_score_a"
         tools:text="VNR" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/live_score_type_two_sport_name">
+
+        <ImageView
+            android:id="@+id/live_indicator_image_view"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/circle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/live"
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

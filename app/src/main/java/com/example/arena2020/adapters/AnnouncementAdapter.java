@@ -59,7 +59,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             timeTextView = itemView.findViewById(R.id.list_item_announcement_date_text_view);
-            titleTextView = itemView.findViewById(R.id.live_score_type_one_sport_name);
+            titleTextView = itemView.findViewById(R.id.live_score_type_two_sport_name);
             descTextView = itemView.findViewById(R.id.list_item_announcement_description_text_view);
         }
 

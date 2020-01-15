@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,13 +24,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class typeOneScoresFragment extends Fragment {
+public class TypeOneScoresFragment extends Fragment {
 
     private String documentID;
 
     private FirebaseFirestore db;
 
-    public typeOneScoresFragment(String documentID) {
+    public TypeOneScoresFragment(String documentID) {
         db = FirebaseFirestore.getInstance();
         this.documentID = documentID;
     }
@@ -36,10 +40,11 @@ public class typeOneScoresFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_type_one_scores, container, false);
 
-        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_one_sport_name);
-        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_one_score_team_left);
-        final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_one_score_team_right);
-        final TextView scoreTextView = root.findViewById(R.id.live_score_type_one_score);
+        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_two_sport_name);
+        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_two_score_team_a);
+        final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_two_score_team_b);
+        final TextView scoreTextView = root.findViewById(R.id.live_score_type_two_score_a);
+        ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
 
         db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -61,10 +66,17 @@ public class typeOneScoresFragment extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
                 if (snapshot != null && snapshot.exists()) {
-                    //TODO: put live scores
+                    scoreTextView.setText(formatScores(snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
                 }
             }
         });
+
+        Animation animation = new AlphaAnimation(1, 0);
+        animation.setDuration(600);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        liveIndicatorImageView.startAnimation(animation);
 
 
         return root;

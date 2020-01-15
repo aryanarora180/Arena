@@ -22,22 +22,14 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class ScheduleFragment extends Fragment implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class ScheduleFragment extends Fragment {
 
     private ScheduleSportAdapter mAdapter;
     private RecyclerView mRecyclerView;
-
-    public static final int NO_FILTER = 1001;
 
     private Chip mChip23;
     private Chip mChip24;
@@ -45,9 +37,6 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     private Chip mChip26;
     private ChipGroup mChipGroup;
     private ProgressBar mProgressBar;
-    private RapidFloatingActionLayout rfaLayout;
-    private RapidFloatingActionButton filterFab;
-    private RapidFloatingActionHelper filterFabHelpler;
     private int selectedDay;
 
     ArrayList<ScheduleSport> mAllScheduleEvents;
@@ -74,11 +63,6 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
         mChip25 = root.findViewById(R.id.schedule_25_chip);
         mChip26 = root.findViewById(R.id.schedule_26_chip);
         mChipGroup = root.findViewById(R.id.schedule_chip_group);
-
-        rfaLayout = root.findViewById(R.id.schedule_filter_kayout);
-        filterFab = root.findViewById(R.id.schedule_filter_fab);
-
-        displayFabOptions();
 
         //Seeing what day it is and setting the respective Chip
         Date curDate = new Date();
@@ -110,7 +94,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                 }
                 setLoadingView();
                 selectedDay = 23;
-                filterScheduleEvents(selectedDay, NO_FILTER);
+                filterScheduleEvents(selectedDay);
                 setRecyclerData();
             }
         });
@@ -123,7 +107,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                 }
                 setLoadingView();
                 selectedDay = 24;
-                filterScheduleEvents(selectedDay, NO_FILTER);
+                filterScheduleEvents(selectedDay);
                 setRecyclerData();
             }
         });
@@ -136,7 +120,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                 }
                 setLoadingView();
                 selectedDay = 25;
-                filterScheduleEvents(selectedDay, NO_FILTER);
+                filterScheduleEvents(selectedDay);
                 setRecyclerData();
             }
         });
@@ -149,7 +133,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                 }
                 setLoadingView();
                 selectedDay = 26;
-                filterScheduleEvents(selectedDay, NO_FILTER);
+                filterScheduleEvents(selectedDay);
                 setRecyclerData();
             }
         });
@@ -177,11 +161,12 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                                 mAllScheduleEvents.add(new ScheduleSport(document.getId(),
                                         document.getDate(getString(R.string.firebase_collection_schedule_field_date)),
                                         document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode)),
+                                        document.getLong(getString(R.string.firebase_collection_schedule_field_matchStatus)),
                                         document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)),
                                         document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)),
                                         false));
                             }
-                            filterScheduleEvents(selectedDay, NO_FILTER);
+                            filterScheduleEvents(selectedDay);
                             setRecyclerView();
                             setRecyclerData();
                         } else {
@@ -191,19 +176,13 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                 });
     }
 
-    private void filterScheduleEvents(int day, int filter) {
+    private void filterScheduleEvents(int day) {
         mScheduleEventsToDisplay.clear();
         for (ScheduleSport sportEvent : mAllScheduleEvents) {
-            if (filter != NO_FILTER) {
-                if (filter == sportEvent.getSportCode() && day == sportEvent.getDay())
-                    mScheduleEventsToDisplay.add(sportEvent);
-            } else {
-                if (day == sportEvent.getDay())
-                    mScheduleEventsToDisplay.add(sportEvent);
-            }
+            if (day == sportEvent.getDay())
+                mScheduleEventsToDisplay.add(sportEvent);
         }
     }
-
 
     private void setLoadingView() {
         mRecyclerView.setVisibility(View.INVISIBLE);
@@ -213,38 +192,6 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     private void setRecyclerView() {
         mRecyclerView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-        switch (position) {
-            case NO_FILTER:
-                filterScheduleEvents(selectedDay, NO_FILTER);
-                setRecyclerData();
-                filterFabHelpler.toggleContent();
-                break;
-            default:
-                filterScheduleEvents(selectedDay, NO_FILTER);
-                setRecyclerData();
-                filterFabHelpler.toggleContent();
-        }
-    }
-
-    @Override
-    public void onRFACItemIconClick(int position, RFACLabelItem item) {
-        //do nothing since we're not using the icon feature
-    }
-
-    private void displayFabOptions() {
-        RapidFloatingActionContentLabelList fabContent = new RapidFloatingActionContentLabelList(getContext());
-        fabContent.setOnRapidFloatingActionContentLabelListListener(this);
-        List<RFACLabelItem> options = new ArrayList<>();
-        options.add(new RFACLabelItem<Integer>()
-                .setLabel(getString(R.string.filter_remove))
-                .setWrapper(NO_FILTER)
-        );
-        fabContent.setItems(options);
-        filterFabHelpler = new RapidFloatingActionHelper(getContext(), rfaLayout, filterFab, fabContent).build();
     }
 
 }

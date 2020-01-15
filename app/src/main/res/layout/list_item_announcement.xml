@@ -40,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/live_score_type_one_sport_name"
+                android:id="@+id/live_score_type_two_sport_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textPrimaryDark"
