@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,6 @@ public class TypeOneScoresFragment extends Fragment {
     private FirebaseFirestore db;
 
     public TypeOneScoresFragment(String documentID) {
-        db = FirebaseFirestore.getInstance();
         this.documentID = documentID;
     }
 
@@ -40,11 +40,14 @@ public class TypeOneScoresFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_type_one_scores, container, false);
 
-        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_two_sport_name);
-        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_two_score_team_a);
-        final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_two_score_team_b);
-        final TextView scoreTextView = root.findViewById(R.id.live_score_type_two_score_a);
-        ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
+        db = FirebaseFirestore.getInstance();
+
+        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_three_sport_name);
+        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_three_score_team_a);
+        final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_three_score_team_b);
+        final TextView scoreTextView = root.findViewById(R.id.live_score_type_three_score);
+        final LinearLayout liveIndicator = root.findViewById(R.id.live_indicator_linear_layout);
+        final ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
 
         db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -52,38 +55,49 @@ public class TypeOneScoresFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        sportNameTextView.setText(ScheduleSport.getSportName(document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode))));
-                        teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
-                        teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
-                        scoreTextView.setText(formatScores(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
+                        long matchStatus = document.getLong(getString(R.string.firebase_collection_schedule_field_matchStatus));
+                        if (matchStatus == ScheduleSport.MATCH_IN_PROGRESS) {
+                            Animation animation = new AlphaAnimation(1, 0);
+                            animation.setDuration(600);
+                            animation.setInterpolator(new LinearInterpolator());
+                            animation.setRepeatCount(Animation.INFINITE);
+                            animation.setRepeatMode(Animation.REVERSE);
+                            liveIndicatorImageView.startAnimation(animation);
+
+                            sportNameTextView.setText(ScheduleSport.getSportName(document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode))));
+                            teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
+                            teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
+                            scoreTextView.setText(formatScores(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
+
+                            db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                                    @Nullable FirebaseFirestoreException e) {
+                                    if (snapshot != null && snapshot.exists()) {
+                                        scoreTextView.setText(formatScores(snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
+                                    }
+                                }
+                            });
+
+                        } else if (matchStatus == ScheduleSport.MATCH_COMPLETED) {
+                            liveIndicator.setVisibility(View.GONE);
+                            sportNameTextView.setText(ScheduleSport.getSportName(document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode))));
+                            teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
+                            teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
+                            scoreTextView.setText(formatScores(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
+                        } else {
+                            MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID);
+                            getFragmentManager().beginTransaction().replace(R.id.fragment_frame, matchScheduledFragment).commit();
+                        }
                     }
                 }
             }
         });
-
-        db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (snapshot != null && snapshot.exists()) {
-                    scoreTextView.setText(formatScores(snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
-                }
-            }
-        });
-
-        Animation animation = new AlphaAnimation(1, 0);
-        animation.setDuration(600);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        liveIndicatorImageView.startAnimation(animation);
-
-
         return root;
     }
 
     private String formatScores(long aScore, long bScore) {
-        return aScore + ":" + bScore;
+        return aScore + "-" + bScore;
     }
 
 }

@@ -23,6 +23,7 @@
     <string name="drawer_close">Close drawer</string>
 
     <string name="live">Live</string>
+    <string name="set">Set</string>
 
     <string name="menu_announcements">Announcements</string>
 
@@ -47,10 +48,21 @@
     <string name="firebase_collection_schedule_field_overs_team_b">teamBOvers</string>
     <string name="firebase_collection_schedule_field_wickets_team_a">teamAWickets</string>
     <string name="firebase_collection_schedule_field_wickets_team_b">teamBWickets</string>
+    <string name="firebase_collection_schedule_field_currentSet">currentSet</string>
+    <string name="firebase_collection_schedule_field_setOneWinner">setOneWinner</string>
+    <string name="firebase_collection_schedule_field_setTwoWinner">setTwoWinner</string>
+    <string name="firebase_collection_schedule_field_setThreeWinner">setThreeWinner</string>
+    <string name="firebase_collection_schedule_field_setOneScore">setOneScore</string>
+    <string name="firebase_collection_schedule_field_setTwoScore">setTwoScore</string>
+    <string name="firebase_collection_schedule_field_setThreeScore">setThreeScore</string>
+
 
     <string name="firebase_collection_announcements">Announcements</string>
     <string name="firebase_collection_announcements_field_date">date</string>
     <string name="firebase_collection_announcements_field_name">name</string>
     <string name="firebase_collection_announcements_field_desc">description</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

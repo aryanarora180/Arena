@@ -25,29 +25,30 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class TypeTwoScoresFragment extends Fragment {
+public class TypeThreeScoresFragment extends Fragment {
 
     private String documentID;
 
     private FirebaseFirestore db;
 
-    public TypeTwoScoresFragment(String documentID) {
+    public TypeThreeScoresFragment(String documentID) {
         db = FirebaseFirestore.getInstance();
         this.documentID = documentID;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_type_two_scores, container, false);
+        View root = inflater.inflate(R.layout.fragment_type_three_scores, container, false);
 
         final TextView sportNameTextView = root.findViewById(R.id.live_score_type_three_sport_name);
         final TextView teamANameTextView = root.findViewById(R.id.live_score_type_three_score_team_a);
         final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_three_score_team_b);
-        final TextView teamAScoreTextView = root.findViewById(R.id.live_score_type_three_score);
-        final TextView teamBScoreTextView = root.findViewById(R.id.live_score_type_two_score_b);
-        final TextView teamAOversTextView = root.findViewById(R.id.live_score_type_two_overs_a);
-        final TextView teamBOversTextView = root.findViewById(R.id.live_score_type_two_overs_b);
+        final TextView scoreTextView = root.findViewById(R.id.live_score_type_three_score);
+        final TextView setIndicatorTextView = root.findViewById(R.id.live_score_type_three_set_indicator);
+        final TextView set1WinnerTextView = root.findViewById(R.id.live_score_type_three_set_1_winner);
+        final TextView set2WinnerTextView = root.findViewById(R.id.live_score_type_three_set_2_winner);
+        final TextView set3WinnerTextView = root.findViewById(R.id.live_score_type_three_set_3_winner);
         final LinearLayout liveIndicator = root.findViewById(R.id.live_indicator_linear_layout);
         final ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
 
@@ -64,60 +65,79 @@ public class TypeTwoScoresFragment extends Fragment {
                             animation.setInterpolator(new LinearInterpolator());
                             animation.setRepeatCount(Animation.INFINITE);
                             animation.setRepeatMode(Animation.REVERSE);
+
                             liveIndicatorImageView.startAnimation(animation);
 
                             sportNameTextView.setText(ScheduleSport.getSportName(document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode))));
                             teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
                             teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
-                            teamAScoreTextView.setText(formatScore(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_a))));
-                            teamAOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_a))));
-                            teamBScoreTextView.setText(formatScore(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b)), document.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_b))));
-                            teamBOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_b))));
+
+                            long currentSet = document.getLong(getString(R.string.firebase_collection_schedule_field_currentSet));
+                            setIndicatorTextView.setText(getString(R.string.set) + " " + currentSet);
+
+                            if (currentSet == 2L)
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setTwoScore)));
+                            else if (currentSet == 3L)
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setThreeScore)));
+                            else
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setOneScore)));
+
+                            set1WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setOneWinner)));
+                            set2WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setTwoWinner)));
+                            set3WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setThreeWinner)));
 
                             db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable DocumentSnapshot snapshot,
                                                     @Nullable FirebaseFirestoreException e) {
                                     if (snapshot != null && snapshot.exists()) {
-                                        teamAScoreTextView.setText(formatScore(snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), snapshot.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_a))));
-                                        teamAOversTextView.setText(formatOvers(snapshot.getString(getString(R.string.firebase_collection_schedule_field_overs_team_a))));
-                                        teamBScoreTextView.setText(formatScore(snapshot.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b)), snapshot.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_b))));
-                                        teamBOversTextView.setText(formatOvers(snapshot.getString(getString(R.string.firebase_collection_schedule_field_overs_team_b))));
+                                        long currentSet = snapshot.getLong(getString(R.string.firebase_collection_schedule_field_currentSet));
+                                        setIndicatorTextView.setText(getString(R.string.set) + " " + currentSet);
+
+                                        if (currentSet == 2L)
+                                            scoreTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setTwoScore)));
+                                        else if (currentSet == 3L)
+                                            scoreTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setThreeScore)));
+                                        else
+                                            scoreTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setOneScore)));
+
+                                        set1WinnerTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setOneWinner)));
+                                        set2WinnerTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setTwoWinner)));
+                                        set3WinnerTextView.setText(snapshot.getString(getString(R.string.firebase_collection_schedule_field_setThreeWinner)));
                                     }
                                 }
                             });
                         } else if (matchStatus == ScheduleSport.MATCH_COMPLETED) {
+
                             liveIndicator.setVisibility(View.GONE);
+
                             sportNameTextView.setText(ScheduleSport.getSportName(document.getLong(getString(R.string.firebase_collection_schedule_field_sportCode))));
                             teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
                             teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
-                            teamAScoreTextView.setText(formatScore(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_a))));
-                            teamAOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_a))));
-                            teamBScoreTextView.setText(formatScore(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b)), document.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_b))));
-                            teamBOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_b))));
+
+                            long currentSet = document.getLong(getString(R.string.firebase_collection_schedule_field_currentSet));
+                            setIndicatorTextView.setText(getString(R.string.set) + " " + currentSet);
+
+                            if (currentSet == 2L)
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setTwoScore)));
+                            else if (currentSet == 3L)
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setThreeScore)));
+                            else
+                                scoreTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setOneScore)));
+
+                            set1WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setOneWinner)));
+                            set2WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setTwoWinner)));
+                            set3WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setThreeWinner)));
                         } else {
                             MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID);
                             getFragmentManager().beginTransaction().replace(R.id.fragment_frame, matchScheduledFragment).commit();
                         }
+
                     }
+
                 }
             }
         });
         return root;
     }
-
-    private String formatScore(long teamScore, long wicketsTaken) {
-        if (teamScore != 0)
-            return teamScore + "/" + wicketsTaken;
-        else
-            return "-";
-    }
-
-    private String formatOvers(String overs) {
-        if (!overs.equals("0.0"))
-            return "(" + overs + ")";
-        else
-            return "";
-    }
-
 }
