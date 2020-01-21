@@ -7,14 +7,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arena2020.R;
+import com.example.arena2020.adapters.MapAdapter;
 
 public class CampusmapFragment extends Fragment {
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    private RecyclerView rv_map;
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_campusmap, container, false);
+
+        rv_map = root.findViewById(R.id.rvCampusMap);
+        rv_map.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MapAdapter adapter = new MapAdapter(getActivity());
+        rv_map.setAdapter(adapter);
+
         return root;
     }
 }
