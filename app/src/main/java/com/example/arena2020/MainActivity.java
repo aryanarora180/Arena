@@ -20,7 +20,6 @@ import com.example.arena2020.ui.CreditsFragment;
 import com.example.arena2020.ui.ReachusFragment;
 import com.example.arena2020.ui.ScheduleFragment;
 import com.example.arena2020.ui.SosFragment;
-import com.example.arena2020.ui.SportsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -89,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_schedule:
                 fragmentClass = ScheduleFragment.class;
-                break;
-            case R.id.nav_sports:
-                fragmentClass = SportsFragment.class;
                 break;
             case R.id.nav_sos:
                 fragmentClass = SosFragment.class;

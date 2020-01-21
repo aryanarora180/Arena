@@ -13,4 +13,7 @@
     <color name="sportCricket">#0000FF</color>
     <color name="sportSquash">#00FF00</color>
     <color name="sportDefault">#FF0000</color>
+
+    <color name="secondary">#4B2727</color>
+
 </resources>
