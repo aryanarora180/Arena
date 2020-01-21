@@ -23,7 +23,7 @@ public class TypeFourScoresFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_type_four_scores, container, false);
 
-        
+
         return root;
     }
 

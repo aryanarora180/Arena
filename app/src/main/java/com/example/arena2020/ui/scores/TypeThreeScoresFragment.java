@@ -141,7 +141,7 @@ public class TypeThreeScoresFragment extends Fragment {
                             set2WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setTwoWinner)));
                             set3WinnerTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_setThreeWinner)));
                         } else {
-                            MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID);
+                            MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID, MatchScheduledFragment.TYPE_SCHEDULED);
                             getFragmentManager().beginTransaction().replace(R.id.fragment_frame, matchScheduledFragment).commit();
                         }
 
