@@ -13,11 +13,6 @@
             android:id="@+id/nav_schedule"
             android:icon="@drawable/group"
             android:title="@string/menu_schedule" />
-
-        <item
-            android:id="@+id/nav_sports"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_sports" />
         <item
             android:id="@+id/nav_sos"
             android:icon="@drawable/ic_menu_camera"
