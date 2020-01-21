@@ -96,9 +96,6 @@ public class TypeOneScoresFragment extends Fragment {
                             teamANameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)));
                             teamBNameTextView.setText(document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)));
                             scoreTextView.setText(formatScores(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_a)), document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b))));
-                        } else {
-                            MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID, MatchScheduledFragment.TYPE_SCHEDULED);
-                            getFragmentManager().beginTransaction().replace(R.id.fragment_frame, matchScheduledFragment).commit();
                         }
                     }
                 }

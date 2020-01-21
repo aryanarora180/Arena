@@ -107,9 +107,6 @@ public class TypeTwoScoresFragment extends Fragment {
                             teamAOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_a))));
                             teamBScoreTextView.setText(formatScore(document.getLong(getString(R.string.firebase_collection_schedule_field_score_team_b)), document.getLong(getString(R.string.firebase_collection_schedule_field_wickets_team_b))));
                             teamBOversTextView.setText(formatOvers(document.getString(getString(R.string.firebase_collection_schedule_field_overs_team_b))));
-                        } else {
-                            MatchScheduledFragment matchScheduledFragment = new MatchScheduledFragment(documentID, MatchScheduledFragment.TYPE_SCHEDULED);
-                            getFragmentManager().beginTransaction().replace(R.id.fragment_frame, matchScheduledFragment).commit();
                         }
                     }
                 }

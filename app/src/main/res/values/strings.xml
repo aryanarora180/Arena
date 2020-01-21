@@ -22,13 +22,15 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
 
-    <string name="live">Live</string>
     <string name="set">Set</string>
 
     <string name="menu_announcements">Announcements</string>
 
-    <string name="match_scheduled">The event hasn\'t started yet</string>
-    <string name="match_in_progress">The event is in progress\nThere are no live scores for this event</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="only_live">Live</string>
+    <string name="live">Live: tap to view scores</string>
+    <string name="completed">Completed: tap to view scores</string>
+    <string name="completed_no_live">Completed. Winner:</string>
     <string name="vs">vs</string>
 
     <string name="chip_23">23RD</string>
@@ -51,6 +53,7 @@
     <string name="firebase_collection_schedule_field_wickets_team_a">teamAWickets</string>
     <string name="firebase_collection_schedule_field_wickets_team_b">teamBWickets</string>
     <string name="firebase_collection_schedule_field_currentSet">currentSet</string>
+    <string name="firebase_collection_schedule_field_winner">winner</string>
     <string name="firebase_collection_schedule_field_setOneWinner">setOneWinner</string>
     <string name="firebase_collection_schedule_field_setTwoWinner">setTwoWinner</string>
     <string name="firebase_collection_schedule_field_setThreeWinner">setThreeWinner</string>

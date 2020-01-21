@@ -163,7 +163,7 @@ public class ScheduleFragment extends Fragment {
                                         document.getLong(getString(R.string.firebase_collection_schedule_field_matchStatus)),
                                         document.getString(getString(R.string.firebase_collection_schedule_field_name_team_a)),
                                         document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)),
-                                        false));
+                                        document.getString(getString(R.string.firebase_collection_schedule_field_winner))));
                             }
                             filterScheduleEvents(selectedDay);
                             setRecyclerView();

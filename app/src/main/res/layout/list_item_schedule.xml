@@ -9,7 +9,7 @@
     android:layout_marginBottom="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:elevation="16dp"
-    android:layout_height="61dp">
+    android:layout_height="wrap_content">
 
          <androidx.constraintlayout.widget.ConstraintLayout
              android:id="@+id/schedule_list_left_part"
@@ -60,6 +60,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
@@ -72,33 +73,32 @@
                 android:layout_marginTop="8dp"
                 android:text="Squash"
                 android:textColor="@color/background"
-                app:layout_constraintEnd_toStartOf="@+id/list_schedule_sport_bookmark"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/list_schedule_match_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/textSecondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/list_schedule_sport_subtitle"
+                tools:text="Live" />
 
             <TextView
                 android:id="@+id/list_schedule_sport_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="TextView"
                 android:textColor="@color/textSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/list_schedule_sport_bookmark"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/list_schedule_sport_bookmark"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:tint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/outline_bookmark_border_24" />
+                app:layout_constraintTop_toBottomOf="@+id/list_schedule_sport_name_text_view"
+                tools:text="BPHC vs BPGC" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

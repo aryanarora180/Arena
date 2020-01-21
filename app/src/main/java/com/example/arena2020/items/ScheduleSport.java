@@ -39,17 +39,17 @@ public class ScheduleSport {
     private long sportStatus;
     private String teamA;
     private String teamB;
-    private boolean bookmarked;
+    private String winner;
 
 
-    public ScheduleSport(String documentId, Date dateAndTime, long sportCode, long sportStatus, String teamA, String teamB, boolean bookmarked) {
+    public ScheduleSport(String documentId, Date dateAndTime, long sportCode, long sportStatus, String teamA, String teamB, String winner) {
         this.documentId = documentId;
         this.dateAndTime = dateAndTime;
         mSportCode = sportCode;
         this.sportStatus = sportStatus;
         this.teamA = teamA;
         this.teamB = teamB;
-        this.bookmarked = bookmarked;
+        this.winner = winner;
     }
 
     public static String getSportName(long sportCode) {
@@ -99,6 +99,10 @@ public class ScheduleSport {
         return mSportCode;
     }
 
+    public String getWinner() {
+        return winner;
+    }
+
     public long getSportStatus() {
         return sportStatus;
     }
@@ -113,7 +117,6 @@ public class ScheduleSport {
         else return SPORT_TYPE_NO_LIVE;
     }
 
-    //TODO: implement getSportName() completely and remove hardcoding and use String resources
     public String getSportName() {
         if (mSportCode == SPORT_CRICKET)
             return "Cricket";
@@ -153,10 +156,6 @@ public class ScheduleSport {
             return "Invalid sport";
     }
 
-    public void setBookmarked(boolean bookmarked) {
-        this.bookmarked = bookmarked;
-    }
-
     public String getVsTeams() {
         return teamA + " vs " + teamB;
     }
@@ -167,10 +166,6 @@ public class ScheduleSport {
 
     public String getTeamB() {
         return teamB;
-    }
-
-    public boolean isBookmarked() {
-        return bookmarked;
     }
 
     public String getTime() {
