@@ -104,7 +104,7 @@ public class ScheduleSport {
     }
 
     public long getSportType() {
-        if (mSportCode == SPORT_FOOTBALL || mSportCode == SPORT_BASKETBALL || mSportCode == SPORT_HOCKEY || mSportCode == SPORT_THROWBALL)
+        if (mSportCode == SPORT_FOOTBALL || mSportCode == SPORT_VOLLEYBALL || mSportCode == SPORT_BASKETBALL || mSportCode == SPORT_HOCKEY || mSportCode == SPORT_THROWBALL)
             return SPORT_TYPE_ONE;
         else if (mSportCode == SPORT_CRICKET)
             return SPORT_TYPE_TWO;

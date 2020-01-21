@@ -74,7 +74,6 @@ public class ScheduleFragment extends Fragment {
         if (curDate.after(dateJan24) && curDate.before(dateJan25)) {
             mChip24.setChecked(true);
             selectedDay = 24;
-
         } else if (curDate.after(dateJan25) && curDate.before(dateJan26)) {
             mChip25.setChecked(true);
             selectedDay = 25;

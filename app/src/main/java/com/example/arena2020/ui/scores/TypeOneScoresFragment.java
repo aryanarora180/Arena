@@ -10,10 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.arena2020.R;
@@ -31,6 +33,9 @@ public class TypeOneScoresFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    private ConstraintLayout viewsLayout;
+    private ProgressBar progressBar;
+
     public TypeOneScoresFragment(String documentID) {
         this.documentID = documentID;
     }
@@ -42,12 +47,17 @@ public class TypeOneScoresFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_three_sport_name);
-        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_three_score_team_a);
+        viewsLayout = root.findViewById(R.id.live_score_constraint);
+        progressBar = root.findViewById(R.id.live_score_loader);
+
+        final TextView sportNameTextView = root.findViewById(R.id.live_score_sport_name);
+        final TextView teamANameTextView = root.findViewById(R.id.live_score_score_team_a);
         final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_three_score_team_b);
         final TextView scoreTextView = root.findViewById(R.id.live_score_type_three_score);
         final LinearLayout liveIndicator = root.findViewById(R.id.live_indicator_linear_layout);
         final ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
+
+        setLoadingView();
 
         db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -55,6 +65,7 @@ public class TypeOneScoresFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        setScoreView();
                         long matchStatus = document.getLong(getString(R.string.firebase_collection_schedule_field_matchStatus));
                         if (matchStatus == ScheduleSport.MATCH_IN_PROGRESS) {
                             Animation animation = new AlphaAnimation(1, 0);
@@ -98,6 +109,16 @@ public class TypeOneScoresFragment extends Fragment {
 
     private String formatScores(long aScore, long bScore) {
         return aScore + "-" + bScore;
+    }
+
+    private void setLoadingView() {
+        progressBar.setVisibility(View.VISIBLE);
+        viewsLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void setScoreView() {
+        progressBar.setVisibility(View.INVISIBLE);
+        viewsLayout.setVisibility(View.VISIBLE);
     }
 
 }

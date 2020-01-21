@@ -27,7 +27,9 @@
 
     <string name="menu_announcements">Announcements</string>
 
-    <string name="filter_remove">Remove filter</string>
+    <string name="match_scheduled">The event hasn\'t started yet</string>
+    <string name="match_in_progress">The event is in progress\nThere are no live scores for this event</string>
+    <string name="vs">vs</string>
 
     <string name="chip_23">23RD</string>
     <string name="chip_24">24TH</string>

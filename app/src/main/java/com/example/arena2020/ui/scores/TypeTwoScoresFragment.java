@@ -10,10 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.arena2020.R;
@@ -31,8 +33,10 @@ public class TypeTwoScoresFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    private ConstraintLayout viewsLayout;
+    private ProgressBar progressBar;
+
     public TypeTwoScoresFragment(String documentID) {
-        db = FirebaseFirestore.getInstance();
         this.documentID = documentID;
     }
 
@@ -41,8 +45,13 @@ public class TypeTwoScoresFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_type_two_scores, container, false);
 
-        final TextView sportNameTextView = root.findViewById(R.id.live_score_type_three_sport_name);
-        final TextView teamANameTextView = root.findViewById(R.id.live_score_type_three_score_team_a);
+        db = FirebaseFirestore.getInstance();
+
+        viewsLayout = root.findViewById(R.id.live_score_constraint);
+        progressBar = root.findViewById(R.id.live_score_loader);
+
+        final TextView sportNameTextView = root.findViewById(R.id.live_score_sport_name);
+        final TextView teamANameTextView = root.findViewById(R.id.live_score_score_team_a);
         final TextView teamBNameTextView = root.findViewById(R.id.live_score_type_three_score_team_b);
         final TextView teamAScoreTextView = root.findViewById(R.id.live_score_type_three_score);
         final TextView teamBScoreTextView = root.findViewById(R.id.live_score_type_two_score_b);
@@ -51,12 +60,15 @@ public class TypeTwoScoresFragment extends Fragment {
         final LinearLayout liveIndicator = root.findViewById(R.id.live_indicator_linear_layout);
         final ImageView liveIndicatorImageView = root.findViewById(R.id.live_indicator_image_view);
 
+        setLoadingView();
+
         db.collection(getString(R.string.firebase_collection_schedule)).document(documentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        setScoreView();
                         long matchStatus = document.getLong(getString(R.string.firebase_collection_schedule_field_matchStatus));
                         if (matchStatus == ScheduleSport.MATCH_IN_PROGRESS) {
                             Animation animation = new AlphaAnimation(1, 0);
@@ -118,6 +130,16 @@ public class TypeTwoScoresFragment extends Fragment {
             return "(" + overs + ")";
         else
             return "";
+    }
+
+    private void setLoadingView() {
+        progressBar.setVisibility(View.VISIBLE);
+        viewsLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void setScoreView() {
+        progressBar.setVisibility(View.INVISIBLE);
+        viewsLayout.setVisibility(View.VISIBLE);
     }
 
 }

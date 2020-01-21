@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arena2020.R;
 import com.example.arena2020.items.ScheduleSport;
+import com.example.arena2020.ui.scores.TypeFourScoresFragment;
 import com.example.arena2020.ui.scores.TypeOneScoresFragment;
 import com.example.arena2020.ui.scores.TypeThreeScoresFragment;
 import com.example.arena2020.ui.scores.TypeTwoScoresFragment;
@@ -116,6 +117,8 @@ public class ScheduleSportAdapter extends RecyclerView.Adapter<ScheduleSportAdap
             mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new TypeTwoScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
         else if (sportType == ScheduleSport.SPORT_TYPE_THREE)
             mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new TypeThreeScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
+        else if (sportType == ScheduleSport.SPORT_TYPE_NO_LIVE)
+            mFragmentManager.beginTransaction().replace(R.id.fragment_frame, new TypeFourScoresFragment(documentID), documentID).addToBackStack(documentID).commit();
     }
 
 }
