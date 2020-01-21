@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/coordinator_schedule"
+<com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:id="@+id/schedule_filter_layout"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,4 +82,18 @@
             app:layout_constraintTop_toBottomOf="@+id/schedule_chip_group" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/schedule_filter_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        rfab:rfab_color_normal="@color/colorPrimary"
+        rfab:rfab_color_pressed="@color/colorPrimary"
+        rfab:rfab_drawable="@drawable/ic_filter"
+        rfab:rfab_size="normal" />
+
+</com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>

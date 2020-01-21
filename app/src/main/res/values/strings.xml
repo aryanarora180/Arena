@@ -30,8 +30,10 @@
     <string name="only_live">Live</string>
     <string name="live">Live: tap to view scores</string>
     <string name="completed">Completed: tap to view scores</string>
+    <string name="only_completed">Completed</string>
     <string name="completed_no_live">Completed. Winner:</string>
     <string name="vs">vs</string>
+    <string name="no_filter">No filter</string>
 
     <string name="chip_23">23RD</string>
     <string name="chip_24">24TH</string>

@@ -12,8 +12,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <!-- there's another bug that happens some times. schedule fragment crashes sometimes randomly saying no context attached i'll reproduce -->
-
     <!-- This LinearLayout represents the contents of the screen  -->
 
     <LinearLayout

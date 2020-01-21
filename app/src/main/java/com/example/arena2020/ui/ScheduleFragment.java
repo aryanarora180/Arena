@@ -1,7 +1,6 @@
 package com.example.arena2020.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +22,24 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends Fragment implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
 
     private ScheduleSportAdapter mAdapter;
     private RecyclerView mRecyclerView;
+
+    public static final int FILTER_NOT_STARTED = 8001;
+    public static final int FILTER_LIVE = 8002;
+    public static final int FILTER_COMPLETED = 8003;
 
     private Chip mChip23;
     private Chip mChip24;
@@ -38,7 +47,13 @@ public class ScheduleFragment extends Fragment {
     private Chip mChip26;
     private ChipGroup mChipGroup;
     private ProgressBar mProgressBar;
+
     private int selectedDay;
+    public static final int FILTER_NONE = 8004;
+    private RapidFloatingActionLayout rfaLayout;
+    private RapidFloatingActionButton filterFab;
+    private RapidFloatingActionHelper filterFabHelpler;
+    private int selectedFilter;
 
     ArrayList<ScheduleSport> mAllScheduleEvents;
     ArrayList<ScheduleSport> mScheduleEventsToDisplay;
@@ -49,8 +64,12 @@ public class ScheduleFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-
         db = FirebaseFirestore.getInstance();
+
+        rfaLayout = root.findViewById(R.id.schedule_filter_layout);
+        filterFab = root.findViewById(R.id.schedule_filter_fab);
+
+        setupFab();
 
         mAllScheduleEvents = new ArrayList<>();
         mScheduleEventsToDisplay = new ArrayList<>();
@@ -87,6 +106,8 @@ public class ScheduleFragment extends Fragment {
             selectedDay = 23;
         }
 
+        selectedFilter = FILTER_NONE;
+
         mChip23.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +116,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 setLoadingView();
                 selectedDay = 23;
-                filterScheduleEvents(selectedDay);
+                filterScheduleEvents();
                 setRecyclerData();
             }
         });
@@ -108,7 +129,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 setLoadingView();
                 selectedDay = 24;
-                filterScheduleEvents(selectedDay);
+                filterScheduleEvents();
                 setRecyclerData();
             }
         });
@@ -121,7 +142,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 setLoadingView();
                 selectedDay = 25;
-                filterScheduleEvents(selectedDay);
+                filterScheduleEvents();
                 setRecyclerData();
             }
         });
@@ -134,7 +155,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 setLoadingView();
                 selectedDay = 26;
-                filterScheduleEvents(selectedDay);
+                filterScheduleEvents();
                 setRecyclerData();
             }
         });
@@ -167,7 +188,7 @@ public class ScheduleFragment extends Fragment {
                                         document.getString(getString(R.string.firebase_collection_schedule_field_name_team_b)),
                                         document.getString(getString(R.string.firebase_collection_schedule_field_winner))));
                             }
-                            filterScheduleEvents(selectedDay);
+                            filterScheduleEvents();
                             setRecyclerView();
                             setRecyclerData();
                         } else {
@@ -177,11 +198,25 @@ public class ScheduleFragment extends Fragment {
                 });
     }
 
-    private void filterScheduleEvents(int day) {
+    private void filterScheduleEvents() {
         mScheduleEventsToDisplay.clear();
         for (ScheduleSport sportEvent : mAllScheduleEvents) {
-            if (day == sportEvent.getDay())
-                mScheduleEventsToDisplay.add(sportEvent);
+            if (selectedFilter == FILTER_NONE) {
+                if (selectedDay == sportEvent.getDay()) {
+                    mScheduleEventsToDisplay.add(sportEvent);
+                }
+            } else if (selectedFilter == FILTER_NOT_STARTED) {
+                if (selectedDay == sportEvent.getDay() && sportEvent.getSportStatus() == ScheduleSport.MATCH_NOT_STARTED)
+                    mScheduleEventsToDisplay.add(sportEvent);
+            } else if (selectedFilter == FILTER_LIVE) {
+                if (selectedDay == sportEvent.getDay() && sportEvent.getSportStatus() == ScheduleSport.MATCH_IN_PROGRESS) {
+                    mScheduleEventsToDisplay.add(sportEvent);
+                }
+            } else if (selectedFilter == FILTER_COMPLETED) {
+                if (selectedDay == sportEvent.getDay() && sportEvent.getSportStatus() == ScheduleSport.MATCH_COMPLETED)
+                    mScheduleEventsToDisplay.add(sportEvent);
+            }
+
         }
     }
 
@@ -193,6 +228,78 @@ public class ScheduleFragment extends Fragment {
     private void setRecyclerView() {
         mRecyclerView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void setupFab() {
+        RapidFloatingActionContentLabelList fabContent = new RapidFloatingActionContentLabelList(getContext());
+        fabContent.setOnRapidFloatingActionContentLabelListListener(this);
+        List<RFACLabelItem> options = new ArrayList<>();
+        options.add(new RFACLabelItem<Integer>()
+                .setLabel(getString(R.string.scheduled))
+                .setWrapper(FILTER_NOT_STARTED)
+        );
+        options.add(new RFACLabelItem<Integer>()
+                .setLabel(getString(R.string.only_live))
+                .setWrapper(FILTER_LIVE)
+        );
+        options.add(new RFACLabelItem<Integer>()
+                .setLabel(getString(R.string.only_completed))
+                .setWrapper(FILTER_COMPLETED)
+        );
+        options.add(new RFACLabelItem<Integer>()
+                .setLabel(getString(R.string.no_filter))
+                .setWrapper(FILTER_NONE)
+        );
+        fabContent.setItems(options);
+        filterFabHelpler = new RapidFloatingActionHelper(getContext(), rfaLayout, filterFab, fabContent).build();
+    }
+
+    @Override
+    public void onRFACItemIconClick(int position, RFACLabelItem item) {
+        //do nothing since we're not gonna use icons
+    }
+
+    @Override
+    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+        switch (position) {
+            case FILTER_NOT_STARTED:
+                selectedFilter = FILTER_NOT_STARTED;
+                Log.d("Filters", "Filter: not started");
+                filterScheduleEvents();
+                setRecyclerData();
+                mAdapter.notifyDataSetChanged();
+                filterFabHelpler.toggleContent();
+                break;
+            case FILTER_LIVE:
+                selectedFilter = FILTER_LIVE;
+                Log.d("Filters", "Filter: live");
+                filterScheduleEvents();
+                setRecyclerData();
+                mAdapter.notifyDataSetChanged();
+                filterFabHelpler.toggleContent();
+                break;
+            case FILTER_COMPLETED:
+                selectedFilter = FILTER_COMPLETED;
+                Log.d("Filters", "Filter: completed");
+                filterScheduleEvents();
+                setRecyclerData();
+                mAdapter.notifyDataSetChanged();
+                filterFabHelpler.toggleContent();
+                break;
+            case FILTER_NONE:
+                Log.d("Filters", "Filter: none");
+                filterScheduleEvents();
+                setRecyclerData();
+                mAdapter.notifyDataSetChanged();
+                filterFabHelpler.toggleContent();
+            default:
+                selectedFilter = FILTER_NONE;
+                Log.d("Filters", "Filter: default");
+                filterScheduleEvents();
+                setRecyclerData();
+                mAdapter.notifyDataSetChanged();
+                filterFabHelpler.toggleContent();
+        }
     }
 
 }

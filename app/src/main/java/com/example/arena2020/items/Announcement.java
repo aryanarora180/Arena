@@ -31,7 +31,7 @@ public class Announcement {
     }
 
     public String getTime() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy hh:mm", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM hh:mm a", Locale.getDefault());
         return simpleDateFormat.format(announcementDate);
     }
 
