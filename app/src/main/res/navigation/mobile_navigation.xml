@@ -7,48 +7,48 @@
 
     <fragment
         android:id="@+id/nav_feed"
-        android:name="com.example.arena2020.ui.AnnouncementFragment"
+        android:name="com.dota.arena2020.ui.AnnouncementFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_announcements" />
 
     <fragment
         android:id="@+id/nav_schedule"
-        android:name="com.example.arena2020.ui.ScheduleFragment"
+        android:name="com.dota.arena2020.ui.ScheduleFragment"
         android:label="@string/menu_schedule"
         tools:layout="@layout/fragment_schedule" />
     <fragment
         android:id="@+id/nav_sos"
-        android:name="com.example.arena2020.ui.SosFragment"
+        android:name="com.dota.arena2020.ui.SosFragment"
         android:label="@string/menu_sos"
         tools:layout="@layout/fragment_sos" />
 
     <fragment
         android:id="@+id/nav_contact_us"
-        android:name="com.example.arena2020.ui.ContactUsFragment"
+        android:name="com.dota.arena2020.ui.ContactUsFragment"
         android:label="@string/menu_contact_us"
         tools:layout="@layout/fragment_contact_us" />
 
     <fragment
         android:id="@+id/nav_about_us"
-        android:name="com.example.arena2020.ui.AboutUsFragment"
+        android:name="com.dota.arena2020.ui.AboutUsFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about_us" />
 
     <fragment
         android:id="@+id/nav_credits"
-        android:name="com.example.arena2020.ui.CreditsFragment"
+        android:name="com.dota.arena2020.ui.CreditsFragment"
         android:label="@string/menu_credits"
         tools:layout="@layout/fragment_credits" />
 
     <fragment
         android:id="@+id/nav_reachus"
-        android:name="com.example.arena2020.ui.ReachusFragment"
+        android:name="com.dota.arena2020.ui.ReachusFragment"
         android:label="@string/menu_reachus"
         tools:layout="@layout/fragment_reachus" />
 
     <fragment
         android:id="@+id/nav_campusmap"
-        android:name="com.example.arena2020.ui.CampusmapFragment"
+        android:name="com.dota.arena2020.ui.CampusmapFragment"
         android:label="@string/menu_map"
         tools:layout="@layout/fragment_campusmap" />
 
