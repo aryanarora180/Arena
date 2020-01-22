@@ -192,7 +192,7 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     private void getAllScheduleEvents() {
         setLoadingView();
         mScheduleEventsToDisplay.clear();
-        db.collection(getString(R.string.firebase_collection_schedule))
+        db.collection(getString(R.string.firebase_collection_schedule)).orderBy(getString(R.string.firebase_collection_schedule_field_date))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
