@@ -1,96 +1,155 @@
 package com.dota.arena2020.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.dota.arena2020.R;
 import com.dota.arena2020.adapters.AnnouncementAdapter;
-import com.dota.arena2020.items.Announcement;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class AnnouncementFragment extends Fragment {
+import static java.util.Collections.reverse;
 
-    private AnnouncementAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private ProgressBar mProgressBar;
+public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    RecyclerView mRecyclerView;
+    AnnouncementAdapter mAnnouncementAdapter;
+    private SwipeRefreshLayout refreshLayout;
+    ArrayList<String> timeArray = new ArrayList<>();
+    ArrayList<String> deptArray = new ArrayList<>();
+    ArrayList<String> descArray = new ArrayList<>();
+    int i = 0;
+    private ProgressBar progressBar;
+    private Context context;
 
-    ArrayList<Announcement> mAnnouncements;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getContext();
+    }
 
-    private FirebaseFirestore db;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_announcements, container, false);
+
+        refreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(this);
+
+        return rootView;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_announcements, container, false);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = root.findViewById(R.id.announcements_recycler);
-        mProgressBar = root.findViewById(R.id.announcements_progress_bar);
+//        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+//        toolbar.setTitle("Feed");
+        progressBar = getActivity().findViewById(R.id.announcements_progress_bar);
 
-        db = FirebaseFirestore.getInstance();
+        mRecyclerView = view.findViewById(R.id.announcements_recycler);
 
-        mAnnouncements = new ArrayList<>();
+        progressBar.setVisibility(View.VISIBLE);
+        callFireBase();
 
-        getAnnouncements();
-        setRecyclerData();
-
-        return root;
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                callFireBase();
+//            }
+//        });
     }
 
-    private void setRecyclerData() {
-        mAdapter = new AnnouncementAdapter(mAnnouncements, getContext());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void callFireBase() {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference notification = database.child("notifications");
+        Log.v("Feed Adapter", "timeArray is created..!!!!");
+        notification.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("bjbhkjhni","In notif");
+                timeArray = new ArrayList<String>();
+                descArray = new ArrayList<String>();
+                deptArray = new ArrayList<String>();
+                i = 0;
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.e("Feed Fragment", ds.getKey());
+                    Long timestamp = Long.parseLong(ds.getKey());
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(timestamp);
+                    String date = DateFormat.format("dd-MM HH:mm", cal).toString();
+
+                    timeArray.add(date);
+                    descArray.add(ds.child("content").getValue(String.class));
+                    deptArray.add(ds.child("title").getValue(String.class));
+                    i++;
+                }
+
+                reverse(timeArray);
+                reverse(descArray);
+                reverse(deptArray);
+
+                Log.e("FEED FRAGMENT !", Integer.toString(deptArray.size()));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mAnnouncementAdapter = new AnnouncementAdapter(getActivity(), timeArray, deptArray, descArray, i);
+                //mFeedAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(mAnnouncementAdapter);
+                progressBar.setVisibility(View.GONE);
+                //swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //swipeRefreshLayout.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+        if (!isOnline()) {
+            progressBar.setVisibility(View.GONE);
+            //swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(context, "No Network....Get connected & Swipe to Refresh", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void getAnnouncements() {
-        setLoadingView();
-        mAnnouncements.clear();
-        db.collection(getString(R.string.firebase_collection_announcements))
-                .orderBy(getString(R.string.firebase_collection_announcements_field_date))
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                mAnnouncements.add(new Announcement(document.getId(),
-                                        document.getString(getContext().getString(R.string.firebase_collection_announcements_field_name)),
-                                        document.getString(getContext().getString(R.string.firebase_collection_announcements_field_desc)),
-                                        document.getDate(getContext().getString(R.string.firebase_collection_announcements_field_date))));
-                            }
-                            Log.d("HENLO", " " + R.string.firebase_collection_announcements_field_name);
-                            setRecyclerView();
-                            setRecyclerData();
-                        } else {
-                            Log.d("ScheduleFragment", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        progressBar.setVisibility(View.GONE);
     }
 
-    private void setLoadingView() {
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private void setRecyclerView() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.INVISIBLE);
+    @Override
+    public void onRefresh() {
+        callFireBase();
     }
-
 }

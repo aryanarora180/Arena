@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +37,19 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.fragment_contact_us, container, false);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Fragment fragment = new AnnouncementFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
 
         mRecyclerView = rootview.findViewById(R.id.contact_us_recycler_view);
 
@@ -98,40 +114,41 @@ public class ContactUsFragment extends Fragment {
     private void addDataToArray() {
         //For organizing body members:
         mContactUses.add(new ContactUs("Nikhil Peruri","President", "+917981720729", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Vaishnavi Reddy","General Secratary", "+918919644180", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Shaaban Karim","Technical Secretary", "+917358325253", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Balpreet Singh","Department of Photography", "+919887422827", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Nikita Gohel ","Department of Technical Arts ", "+919920961821", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Amrutha Dude","Department of Sponsorship and Marketing", "+919182967515", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Harshal Mahajan ","Department of Security and Hospitality", "+918698772326", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Viswa Sai Teja","Department of Arts and Deco", "+917036369797", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Nikhil Bhasin","Department of Professional Events", "+918130559519", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Pranek Gupta","Department of Recreational Activities", "+919867622542", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Niral Khambhati ","Department of Visual Effects", "+919727896468", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("N S S TEJA","Controlz", "+917093155599", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
-        mContactUses.add(new ContactUs("Abhishek Bhardwaj","LSD", "+919205440192", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+        mContactUses.add(new ContactUs("Praneeth Shetty","Sports Secretary(Boys)", "+917680993056", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+        mContactUses.add(new ContactUs("Siri Jagarlamudi","Sports Secretary(Girls)", "+917032674829", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+        mContactUses.add(new ContactUs("Sumedha Nallamilli","Publicity Head", "919441363744", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+        mContactUses.add(new ContactUs("Gowtham Dhanisetti","Firewallz Head", "+917674947271", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+        mContactUses.add(new ContactUs("Shreyas Reddy","Sponsorship Head", "+919389385938", ContactUs.PUBLICITY_TYPE_ORGANIZING_BODY));
+
+
 
         //For tech senate members:
-        mContactUses.add(new ContactUs("Shreya Agarwal","Association of Chemical Engineers", "+918109090699", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Archan Desai","Axiom", "+919537388866", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Abhay Gupta","Synapsis", "+917389862404", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Karnica Parasher","Spectrum", "+918650914445", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Prabhmeet Singh","PHoEnix ", "+918802806955", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Vishesh Jain","Esports Club", "+918890783834", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Sruthi Tata ","Economics Association ", "+918125744473", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Priyanka Reddy","MEA", "+917093485874", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Aditya Gayatri Sastry Kaipa","Alchemy", "+919515378525", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Prakhar Sinha","Quiz Club", "+919099002830", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Aditya Agarwal","BITS Embryo", "+919079635401", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Prathmesh Mahalle","ARC", "+919422920299", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Uddeshya Chaudhary","Wall street club", "+919971629256", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Vithun Athreya","E-Cell", "+919819822977", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Yashas","Ad Astra", "+919663949463", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Syed Abdullah Naeem ","Panacea", "+917095819827", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Toshit Jain","CSA", "+917997000293", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Ujjwal Raizada","Crux", "+917897745889", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Tota Gautham Reddy","SAE", "+919100562917", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
-        mContactUses.add(new ContactUs("Kshitij Choughule ","Ieee", "+919082038271", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Swapnil Tagwale","Cricket Captain", "+918465927512", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Abhimanyu Gulia","Football Captain(B)", "+919650441702", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Mrunal Dhaygude","Football Captain(G)", "+917350593598", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Hardik Jain","Hockey Captain", "+917087423740", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Shantanu Gupta","Basketball Captain(B)", "+917997167897", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Bhavika Sharma","Basketball Captain(G)", "+918340038686", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Rohit Reddy","Volleyball Captain(B)", "+919121408747", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Shibani","Volleyball Captain(G)", "+918016949292", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Sai Karthik","Kabaddi Captain", "+919182625689", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Utkarsh Grover","Badmintion Captain(B)", "+918368522551", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Snehha Tripathi","Badminton Captain(G)", "+919632967994", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Aayush Garg","Tennis Captain(B)", "+919909920479", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Shivangi Prasad","Tennis Captain(G)", "+919178459949", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Ishan Khasnis","Squash Captain(B)", "+919930895185", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Nitya Gupta","Squash Captain(G)", "+918826620119", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Shivaank Agarwal","TT Captain(B)", "+919867618713", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Aishvarya Srivastava","TT Captain(G)", "+919899011357", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Karan Grover","Chess Captain", "+917999882809", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Amitesh Sahu","Carrom Captain", "+918093596667", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Manoj kumar Raparthi","Snooker Captain", "+918501017080", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("N Amsavalli","Throwball Captain", "+918500176854", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+        mContactUses.add(new ContactUs("Sai Karthik","Kabaddi Captain", "+919182625689", ContactUs.PUBLICITY_TYPE_TECH_SENATE));
+
+
+
+
     }
 
     private void setOrganizingBody() {

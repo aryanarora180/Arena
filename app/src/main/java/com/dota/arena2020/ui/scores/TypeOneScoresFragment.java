@@ -13,11 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.dota.arena2020.R;
+import com.dota.arena2020.items.ScheduleSport;
+import com.dota.arena2020.ui.ScheduleFragment;
 import com.dota.arena2020.R;
 import com.dota.arena2020.items.ScheduleSport;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +34,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class TypeOneScoresFragment extends Fragment {
+public class TypeOneScoresFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private String documentID;
 
@@ -35,6 +42,7 @@ public class TypeOneScoresFragment extends Fragment {
 
     private ConstraintLayout viewsLayout;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout refreshLayout;
 
     public TypeOneScoresFragment(String documentID) {
         this.documentID = documentID;
@@ -44,6 +52,22 @@ public class TypeOneScoresFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_type_one_scores, container, false);
+
+        refreshLayout = (SwipeRefreshLayout)root.findViewById(R.id.refreshLayout2);
+        refreshLayout.setOnRefreshListener(this);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Fragment fragment = new ScheduleFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
 
         db = FirebaseFirestore.getInstance();
 
@@ -118,4 +142,8 @@ public class TypeOneScoresFragment extends Fragment {
         viewsLayout.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onRefresh() {
+
+    }
 }
