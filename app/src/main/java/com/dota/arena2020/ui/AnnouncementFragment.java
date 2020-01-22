@@ -151,5 +151,6 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onRefresh() {
         callFireBase();
+        refreshLayout.setRefreshing(false);
     }
 }
