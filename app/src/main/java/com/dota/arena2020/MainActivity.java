@@ -1,8 +1,10 @@
 package com.dota.arena2020;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
@@ -22,7 +24,6 @@ import com.dota.arena2020.ui.ContactUsFragment;
 import com.dota.arena2020.ui.CreditsFragment;
 import com.dota.arena2020.ui.ReachusFragment;
 import com.dota.arena2020.ui.ScheduleFragment;
-import com.dota.arena2020.ui.SosFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -104,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_schedule:
                 fragmentClass = ScheduleFragment.class;
-                break;
-            case R.id.nav_sos:
-                fragmentClass = SosFragment.class;
                 break;
             case R.id.nav_contact_us:
                 fragmentClass = ContactUsFragment.class;

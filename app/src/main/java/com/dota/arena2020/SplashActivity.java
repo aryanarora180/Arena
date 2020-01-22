@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.dota.arena2020.MainActivity;
+
 
 public class SplashActivity extends Activity implements Runnable {
 

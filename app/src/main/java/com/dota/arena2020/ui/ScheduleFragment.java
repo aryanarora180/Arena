@@ -1,5 +1,6 @@
 package com.dota.arena2020.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,9 +41,9 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
     private ScheduleSportAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
-    public static final int FILTER_NOT_STARTED = 8001;
-    public static final int FILTER_LIVE = 8002;
-    public static final int FILTER_COMPLETED = 8003;
+    public static final int FILTER_NOT_STARTED = 0;
+    public static final int FILTER_LIVE = 1;
+    public static final int FILTER_COMPLETED = 2;
 
     private Chip mChip23;
     private Chip mChip24;
@@ -64,7 +68,22 @@ public class ScheduleFragment extends Fragment implements RapidFloatingActionCon
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Fragment fragment = new AnnouncementFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+
         db = FirebaseFirestore.getInstance();
+
+
 
         rfaLayout = root.findViewById(R.id.schedule_filter_layout);
         filterFab = root.findViewById(R.id.schedule_filter_fab);

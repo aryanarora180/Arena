@@ -1,6 +1,7 @@
 package com.dota.arena2020.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,59 +11,80 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dota.arena2020.R;
-import com.dota.arena2020.items.Announcement;
 
 import java.util.ArrayList;
 
-public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapter.ViewHolder> {
+public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapter.FeedViewHolder> {
+    Context context;
+    LayoutInflater mInflater;
+    ArrayList<String> timeArray = new ArrayList<>();
+    ArrayList<String> deptArray = new ArrayList<>();
+    ArrayList<String> descArray = new ArrayList<>();
+    int i;
 
-    private Context mContext;
-    private ArrayList<Announcement> mAnnouncements;
+    public AnnouncementAdapter(Context context) {
+        this.context = context;
+        mInflater = LayoutInflater.from(context);
+        Log.v("Feed Adapter", "timeArray is created..!!!!");
+        System.out.print(i);
+    }
 
-    public AnnouncementAdapter(ArrayList<Announcement> announcements, Context context) {
-        mAnnouncements = announcements;
-        mContext = context;
+    public AnnouncementAdapter(Context context, ArrayList<String> timeArray, ArrayList<String> deptArray, ArrayList<String> descArray, int i) {
+        this.context = context;
+        this.timeArray = timeArray;
+        this.deptArray = deptArray;
+        this.descArray = descArray;
+        this.i = i;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View listItemView = inflater.inflate(R.layout.list_item_announcement, parent, false);
-        ViewHolder viewHolder = new ViewHolder(listItemView);
-        return viewHolder;
+    public AnnouncementAdapter.FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.list_item_announcement, parent, false);
+        return new AnnouncementAdapter.FeedViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Announcement announcement = mAnnouncements.get(position);
+    public void onBindViewHolder(@NonNull FeedViewHolder holder, final int position) {
+        if (timeArray.get(position) != null) {
+            if (timeArray.get(position).equals("01-01 05:30")) {
+                holder.time.setVisibility(View.GONE);
+            } else {
+                holder.time.setVisibility(View.VISIBLE);
+                holder.time.setText(timeArray.get(position));
 
-        TextView timeTextView = holder.timeTextView;
-        TextView titleTextView = holder.titleTextView;
-        TextView descTextView = holder.descTextView;
-
-        timeTextView.setText(announcement.getTime());
-        titleTextView.setText(announcement.getAnnouncementName());
-        descTextView.setText(announcement.getAnnouncementDescription());
+            }
+        } else {
+            holder.time.setText("");
+        }
+        if (deptArray.get(position) != null && deptArray.get(position) != "") {
+            holder.dept.setText(deptArray.get(position));
+        } else {
+            holder.dept.setText("");
+        }
+        if (descArray.get(position) != null && descArray.get(position) != "") {
+            holder.desc.setText(descArray.get(position));
+        } else {
+            holder.desc.setText("");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mAnnouncements.size();
+        return i;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView timeTextView;
-        public TextView titleTextView;
-        public TextView descTextView;
+    public class FeedViewHolder extends RecyclerView.ViewHolder {
+        TextView time;
+        TextView dept;
+        TextView desc;
 
-        public ViewHolder(View itemView) {
+        public FeedViewHolder(View itemView) {
             super(itemView);
-            timeTextView = itemView.findViewById(R.id.list_item_announcement_date_text_view);
-            titleTextView = itemView.findViewById(R.id.live_score_sport_name);
-            descTextView = itemView.findViewById(R.id.list_item_announcement_description_text_view);
+            time = itemView.findViewById(R.id.time);
+            dept = itemView.findViewById(R.id.dept);
+            desc = itemView.findViewById(R.id.desc);
         }
-
     }
-
 }
